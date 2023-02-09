@@ -1,4 +1,4 @@
-'''Module with Prim's and Kruskal's algorithms'''
+'''Module with Kruskal's algorithm'''
 import random
 import networkx as nx
 import matplotlib.pyplot as plt
@@ -54,16 +54,6 @@ def gnp_random_connected_graph(num_of_nodes: int,
                 node_size=500)
         
     return G
-graph = gnp_random_connected_graph(5,1,False, False)
-
-
-def prim_algorithm(graph: list[tuple[int, int, dict]]) -> list[tuple[int, int, dict]]:
-    '''
-    Perform Prim's algorithm to find minimum panning tree
-    Graph is given as list of edges with 
-    Returns list of tuples with information about minimum planning tree edges
-    '''
-    pass
 
 
 def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
@@ -72,27 +62,24 @@ def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
     Graph is given as list of edges with 
     Returns list of tuples with information about minimum planning tree edges
     '''
-    sorted_edges = sorted(graph, key=lambda x: x[2]['weight'])
-    nodes = set()
-    for edge in sorted_edges:
-        nodes.update(edge[:2])
-    list_of_nodes = [set([node]) for node in nodes]
+    sorted_edges = sorted(list(graph.edges(data=True)), key=lambda x: x[2]['weight'])
+    list_of_nodes = [set([node]) for node in list(graph.nodes())]
     res = []
     while len(list_of_nodes) > 1:
         for edge in sorted_edges:
-            node1, node2 = edge[:2]
             for node in list_of_nodes:
-                if node1 in node and node2 not in node:
+                if edge[0] in node and edge[1] not in node:
                     list_of_nodes.remove(node)
-                    for edg in list_of_nodes:
-                        if node2 in edg:
-                            list_of_nodes.remove(edg)
-                            list_of_nodes.append(node.union(edg))
+                    for node_set in list_of_nodes:
+                        if edge[1] in node_set:
+                            list_of_nodes.remove(node_set)
+                            list_of_nodes.append(node.union(node_set))
                             break
                     res.append(edge)
                     break
     return res
 
-# print(graph.edges.data())
-print(kruskal_algorithm(list(graph.edges(data=True))))
-print(list(tree.minimum_spanning_tree(graph, algorithm="kruskal").edges(data=True)))
+if __name__=="__main__":
+    grph = gnp_random_connected_graph(5,1,False,False)
+    print(kruskal_algorithm(grph))
+    print(list(tree.minimum_spanning_tree(grph, algorithm="kruskal").edges(data=True)))
