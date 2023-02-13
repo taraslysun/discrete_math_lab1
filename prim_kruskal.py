@@ -7,6 +7,9 @@ from networkx.algorithms import tree
 
 from networkx.algorithms import floyd_warshall_predecessor_and_distance
 
+import time
+from tqdm import tqdm
+
 def gnp_random_connected_graph(num_of_nodes: int,
                                completeness: int,
                                directed: bool = False,
@@ -107,15 +110,30 @@ def floyd_algorithm(graph: list, nodes: int) -> list:
 
 
 if __name__ == '__main__':
-    G = gnp_random_connected_graph(4, 1, True, False)
+    #G = gnp_random_connected_graph(4, 1, True, False)
 
-    amount_of_nod = len(G.nodes)
+    #amount_of_nod = len(G.nodes)
 
-    print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
+    #print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
 
     # print(list(G.edges(data = True)))
     # print(amount_of_nod)
 
-    pred, dist = floyd_warshall_predecessor_and_distance(G) 
-    for k, v in dist.items():
-        print(f"Distances with {k} source:", dict(v))
+    # pred, dist = floyd_warshall_predecessor_and_distance(G) 
+    # for k, v in dist.items():
+    #     print(f"Distances with {k} source:", dict(v))
+
+    NUM_OF_ITERATIONS = 1000
+    time_taken = 0
+    for i in tqdm(range (NUM_OF_ITERATIONS)):
+        
+        G = gnp_random_connected_graph(100, 0.4, False)
+        amount_of_nod = len(G.nodes)
+        
+        start = time.time()
+        floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
+        end = time.time()
+        
+        time_taken += end - start
+
+    print(time_taken / NUM_OF_ITERATIONS)
