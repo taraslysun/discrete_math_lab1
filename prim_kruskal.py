@@ -5,6 +5,8 @@ import matplotlib.pyplot as plt
 from itertools import combinations, groupby
 from networkx.algorithms import tree
 
+from networkx.algorithms import floyd_warshall_predecessor_and_distance
+
 def gnp_random_connected_graph(num_of_nodes: int,
                                completeness: int,
                                directed: bool = False,
@@ -54,7 +56,7 @@ def gnp_random_connected_graph(num_of_nodes: int,
                 node_size=500)
         
     return G
-graph = gnp_random_connected_graph(5,1,False, False)
+
 
 
 def prim_algorithm(graph: list[tuple[int, int, dict]]) -> list[tuple[int, int, dict]]:
@@ -73,3 +75,47 @@ def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
     Returns list of tuples with information about minimum planning tree edges
     '''
     pass
+
+
+def floyd_algorithm(graph: list, nodes: int) -> list:
+    '''
+    Perform Floyd's algorithm to find all pairs shortest path
+    '''
+    # Потрібні змінні
+    inf = 10 ** 3
+
+    # Пуста матриця ваг
+    matrix = [[] * nodes] * nodes
+    for a in range (0, nodes):
+        matrix[a] = [inf] * nodes
+
+    # Заповнена матриця ваг
+    for t in graph:
+        matrix[t[0]][t[1]] = t[2]['weight']
+    
+    for u in range (0, nodes):
+        matrix[u][u] = 0
+
+    # Аглоритм Флойда
+    for k in range (0, nodes):
+        for i in range (0, nodes):
+            for j in range (0, nodes):
+                matrix[i][j] = min(matrix[i][j], matrix[i][k] + matrix[k][j])
+
+    return matrix
+
+
+
+if __name__ == '__main__':
+    G = gnp_random_connected_graph(4, 1, True, False)
+
+    amount_of_nod = len(G.nodes)
+
+    print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
+
+    # print(list(G.edges(data = True)))
+    # print(amount_of_nod)
+
+    pred, dist = floyd_warshall_predecessor_and_distance(G) 
+    for k, v in dist.items():
+        print(f"Distances with {k} source:", dict(v))
