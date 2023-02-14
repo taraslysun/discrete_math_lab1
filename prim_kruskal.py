@@ -110,37 +110,97 @@ def floyd_algorithm(graph: List, nodes: int) -> List:
         for i in range (0, nodes):
             for j in range (0, nodes):
                 matrix[i][j] = min(matrix[i][j], matrix[i][k] + matrix[k][j])
+    
+    for u in range (0, nodes):
+        if matrix[u][u] < 0:
+            print ('Negative cycle detected!')
+
+            return False
 
     return matrix
 
+def print_result(graph: List, nodes: int) -> 0:
+    '''
+    (List, int) -> 0
+    Prints result of Floyd algorithm
+    '''
+    result = floyd_algorithm(graph, nodes)
+
+    if not result:
+        return
+
+    for i in range (0, len(result)):
+        for j in range (0, len(result)):
+            if result[i][j] > 10 ** 3:
+                result [i][j] = 'inf'
+
+    for x in range (0, len(result)):
+        print (f'Node {x}: distance to vertexes: {result[x]}')
+
+    return 0
+
+def visulization():
+    '''
+    Visualization
+    '''
+    list_of_nodes = [10, 20, 40, 80, 160, 320]
+    time_taken = []
+    NUM_OF_ITERATIONS = 100
+    time_taken_1 = 0
+
+    for x, elem in enumerate(list_of_nodes):
+        for i in tqdm(range (NUM_OF_ITERATIONS)):
+
+            G = gnp_random_connected_graph(elem, 1, False)
+            amount_of_nod = len(G.nodes)
+
+            start = time.time()
+            floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
+            end = time.time()
+
+            time_taken_1 += end - start
+            time_taken.append(time_taken_1)
+    
+    plt.plot(time_taken, list_of_nodes)
+    plt.show()
 
 
 if __name__ == '__main__':
-    #G = gnp_random_connected_graph(4, 1, True, False)
+    G = gnp_random_connected_graph(6, 1, True, False)
 
-    #amount_of_nod = len(G.nodes)
+    amount_of_nod = len(G.nodes)
 
     #print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
 
     # print(list(G.edges(data = True)))
     # print(amount_of_nod)
 
-    # pred, dist = floyd_warshall_predecessor_and_distance(G)
-    # for k, v in dist.items():
-    #     print(f"Distances with {k} source:", dict(v))
+    print_result(list(G.edges(data = True)), amount_of_nod)
 
-    NUM_OF_ITERATIONS = 1000
-    time_taken = 0
+    print ('-' * 50)
 
-    for i in tqdm(range (NUM_OF_ITERATIONS)):
+    try:
+        pred, dist = floyd_warshall_predecessor_and_distance(G)
+        for k, v in dist.items():
+            print(f'Distances with {k} source:', dict(v))
+    except:
+        print('Negative cycle detected')
 
-        G = gnp_random_connected_graph(100, 0.4, False)
-        amount_of_nod = len(G.nodes)
+    # visulization()
 
-        start = time.time()
-        floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
-        end = time.time()
 
-        time_taken += end - start
+    # NUM_OF_ITERATIONS = 1000
+    # time_taken = 0
 
-    print(time_taken / NUM_OF_ITERATIONS)
+    # for i in tqdm(range (NUM_OF_ITERATIONS)):
+
+    #     G = gnp_random_connected_graph(100, 0.4, False)
+    #     amount_of_nod = len(G.nodes)
+
+    #     start = time.time()
+    #     floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
+    #     end = time.time()
+
+    #     time_taken += end - start
+
+    # print(time_taken / NUM_OF_ITERATIONS)
