@@ -139,54 +139,49 @@ def print_result(graph: List, nodes: int) -> 0:
 
     return 0
 
-def visulization():
-    '''
-    Visualization
-    '''
-    list_of_nodes = [10, 20, 40, 80, 160, 320]
-    time_taken = []
-    NUM_OF_ITERATIONS = 100
-    time_taken_1 = 0
-
-    for x, elem in enumerate(list_of_nodes):
-        for i in tqdm(range (NUM_OF_ITERATIONS)):
-
-            G = gnp_random_connected_graph(elem, 1, False)
-            amount_of_nod = len(G.nodes)
-
-            start = time.time()
-            floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
-            end = time.time()
-
-            time_taken_1 += end - start
-            time_taken.append(time_taken_1)
-    
-    plt.plot(time_taken, list_of_nodes)
-    plt.show()
-
 
 if __name__ == '__main__':
-    G = gnp_random_connected_graph(6, 1, True, False)
+    # G = gnp_random_connected_graph(6, 1, True, False)
 
-    amount_of_nod = len(G.nodes)
+    # amount_of_nod = len(G.nodes)
 
     #print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
 
     # print(list(G.edges(data = True)))
     # print(amount_of_nod)
 
-    print_result(list(G.edges(data = True)), amount_of_nod)
+    # print_result(list(G.edges(data = True)), amount_of_nod)
 
-    print ('-' * 50)
+    # print ('-' * 50)
 
-    try:
-        pred, dist = floyd_warshall_predecessor_and_distance(G)
-        for k, v in dist.items():
-            print(f'Distances with {k} source:', dict(v))
-    except:
-        print('Negative cycle detected')
+    # try:
+    #     pred, dist = floyd_warshall_predecessor_and_distance(G)
+    #     for k, v in dist.items():
+    #         print(f'Distances with {k} source:', dict(v))
+    # except:
+    #     print('Negative cycle detected')
 
-    # visulization()
+    list_of_nodes = [10, 20, 40, 80, 160, 320]
+    time_taken = []
+    time_taken_1 = []
+
+    for _, elem in enumerate(list_of_nodes):
+        G = gnp_random_connected_graph(elem, 1, False)
+        amount_of_nod = len(G.nodes)
+
+        start = time.time()
+        floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
+        end = time.time()
+        time_taken.append(end - start)
+
+        start_1 = time.time()
+        floyd_warshall_predecessor_and_distance(G)
+        end_1 = time.time()
+        time_taken_1.append(end_1 - start_1)
+    
+    plt.plot(time_taken, list_of_nodes, color = 'red')
+    plt.plot(time_taken_1, list_of_nodes, color = 'blue')
+    plt.show()
 
 
     # NUM_OF_ITERATIONS = 1000
