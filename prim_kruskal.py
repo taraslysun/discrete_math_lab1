@@ -1,20 +1,12 @@
-'''
-Module with Prim's and Kruskal's algorithms
-'''
-
-from typing import List
-
-import time
+'''Module with Prim's and Kruskal's algorithms'''
 import random
-from itertools import combinations, groupby
-import matplotlib.pyplot as plt
-from networkx.algorithms import tree
-
-from networkx.algorithms import floyd_warshall_predecessor_and_distance
-
-from tqdm import tqdm
-
 import networkx as nx
+import matplotlib.pyplot as plt
+from itertools import combinations, groupby
+from networkx.algorithms import tree
+from typing import List
+from networkx.algorithms import floyd_warshall_predecessor_and_distance
+import time
 
 def gnp_random_connected_graph(num_of_nodes: int,
                                completeness: int,
@@ -24,6 +16,7 @@ def gnp_random_connected_graph(num_of_nodes: int,
     Generates a random graph, similarly to an Erdős-Rényi 
     graph, but enforcing that the resulting graph is conneted (in case of undirected graphs)
     """
+
 
     if directed:
         G = nx.DiGraph()
@@ -44,30 +37,30 @@ def gnp_random_connected_graph(num_of_nodes: int,
 
     for (u,v,w) in G.edges(data=True):
         w['weight'] = random.randint(-5, 20)
-
+    
     if draw:
         plt.figure(figsize=(10,6))
         if directed:
             # draw with edge weights
             pos = nx.arf_layout(G)
-            nx.draw(G,pos, node_color='lightblue',
+            nx.draw(G,pos, node_color='lightblue', 
                     with_labels=True,
-                    node_size=500,
-                    arrowsize=20,
+                    node_size=500, 
+                    arrowsize=20, 
                     arrows=True)
             labels = nx.get_edge_attributes(G,'weight')
             nx.draw_networkx_edge_labels(G, pos,edge_labels=labels)
-
+            
         else:
-            nx.draw(G, node_color='lightblue',
-                with_labels=True,
+            nx.draw(G, node_color='lightblue', 
+                with_labels=True, 
                 node_size=500)
-
+        
     return G
+graph = gnp_random_connected_graph(5,1,False, False)
 
 
-
-def prim_algorithm(graph: List[tuple[int, int, dict]]) -> List[tuple[int, int, dict]]:
+def prim_algorithm(graph: list[tuple[int, int, dict]]) -> list[tuple[int, int, dict]]:
     '''
     Perform Prim's algorithm to find minimum panning tree
     Graph is given as list of edges with 
@@ -76,7 +69,7 @@ def prim_algorithm(graph: List[tuple[int, int, dict]]) -> List[tuple[int, int, d
     pass
 
 
-def kruskal_algorithm(graph: List[tuple[int, int, dict]]) -> List[tuple[int, int, dict]]:
+def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
     '''
     Perform Prim's algorithm to fid minimum panning tree
     Graph is given as list of edges with 
