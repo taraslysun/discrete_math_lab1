@@ -4,6 +4,9 @@ import networkx as nx
 import matplotlib.pyplot as plt
 from itertools import combinations, groupby
 from networkx.algorithms import tree
+from typing import List
+from networkx.algorithms import floyd_warshall_predecessor_and_distance
+import time
 
 def gnp_random_connected_graph(num_of_nodes: int,
                                completeness: int,
@@ -79,8 +82,6 @@ def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
                     break
     return res
 
-
-if __name__=="__main__":
-    grph = gnp_random_connected_graph(5,1,False,False)
-    print(kruskal_algorithm(grph))
-    print(sorted(list(tree.minimum_spanning_tree(grph, algorithm="kruskal").edges(data=True)), key=lambda x: x[2]['weight']))
+# print(graph.edges.data())
+print(kruskal_algorithm(list(graph.edges(data=True))))
+print(list(tree.minimum_spanning_tree(graph, algorithm="kruskal").edges(data=True)))
