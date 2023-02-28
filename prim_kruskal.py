@@ -91,7 +91,7 @@ def floyd_algorithm(graph: List, nodes: int) -> List:
     Performs Floyd's algorithm to find all pairs shortest path
     '''
     # Потрібні змінні
-    inf = 10 ** 5
+    inf = float('inf')
 
     # Пуста матриця ваг
     matrix = [[] * nodes] * nodes
@@ -131,7 +131,7 @@ def print_result(graph: List, nodes: int) -> 0:
 
     for i in range (0, len(result)):
         for j in range (0, len(result)):
-            if result[i][j] > 10 ** 3:
+            if result[i][j] > float('inf'):
                 result [i][j] = 'inf'
 
     for x in range (0, len(result)):
@@ -141,25 +141,6 @@ def print_result(graph: List, nodes: int) -> 0:
 
 
 if __name__ == '__main__':
-    # G = gnp_random_connected_graph(6, 1, True, False)
-
-    # amount_of_nod = len(G.nodes)
-
-    #print(floyd_algorithm(list(G.edges(data = True)), amount_of_nod))
-
-    # print(list(G.edges(data = True)))
-    # print(amount_of_nod)
-
-    # print_result(list(G.edges(data = True)), amount_of_nod)
-
-    # print ('-' * 50)
-
-    # try:
-    #     pred, dist = floyd_warshall_predecessor_and_distance(G)
-    #     for k, v in dist.items():
-    #         print(f'Distances with {k} source:', dict(v))
-    # except:
-    #     print('Negative cycle detected')
 
     list_of_nodes = [10, 20, 40, 80, 160, 320]
     time_taken = []
@@ -181,21 +162,9 @@ if __name__ == '__main__':
     
     plt.plot(time_taken, list_of_nodes, color = 'red')
     plt.plot(time_taken_1, list_of_nodes, color = 'blue')
+    plt.xlabel('Time taken')
+    plt.ylabel('Num of nodes')
+    plt.legend(['My algo', 'Integrated algo'])
     plt.show()
+    plt.savefig('example.png')
 
-
-    # NUM_OF_ITERATIONS = 1000
-    # time_taken = 0
-
-    # for i in tqdm(range (NUM_OF_ITERATIONS)):
-
-    #     G = gnp_random_connected_graph(100, 0.4, False)
-    #     amount_of_nod = len(G.nodes)
-
-    #     start = time.time()
-    #     floyd_algorithm(list(G.edges(data = True)), amount_of_nod)
-    #     end = time.time()
-
-    #     time_taken += end - start
-
-    # print(time_taken / NUM_OF_ITERATIONS)
