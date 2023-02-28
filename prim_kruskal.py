@@ -69,7 +69,7 @@ def gnp_random_connected_graph(num_of_nodes: int,
 
 def prim_algorithm(graph: List[tuple[int, int, dict]]) -> List[tuple[int, int, dict]]:
     '''
-    Perform Prim's algorithm to fid minimum panning tree
+    Perform Prim's algorithm to find minimum panning tree
     Graph is given as list of edges with 
     Returns list of tuples with information about minimum planning tree edges
     '''
@@ -82,7 +82,30 @@ def kruskal_algorithm(graph: List[tuple[int, int, dict]]) -> List[tuple[int, int
     Graph is given as list of edges with 
     Returns list of tuples with information about minimum planning tree edges
     '''
-    pass
+    sorted_edges = sorted(graph, key=lambda x: x[2]['weight'])
+    nodes = set()
+    for edge in sorted_edges:
+        nodes.update(edge[:2])
+    list_of_nodes = [set([node]) for node in nodes]
+    res = []
+    while len(list_of_nodes) > 1:
+        for edge in sorted_edges:
+            node1, node2 = edge[:2]
+            for node in list_of_nodes:
+                if node1 in node and node2 not in node:
+                    list_of_nodes.remove(node)
+                    for edg in list_of_nodes:
+                        if node2 in edg:
+                            list_of_nodes.remove(edg)
+                            list_of_nodes.append(node.union(edg))
+                            break
+                    res.append(edge)
+                    break
+    return res
+
+# print(graph.edges.data())
+print(kruskal_algorithm(list(graph.edges(data=True))))
+print(list(tree.minimum_spanning_tree(graph, algorithm="kruskal").edges(data=True)))
 
 
 def floyd_algorithm(graph: List, nodes: int) -> List:
