@@ -47,18 +47,18 @@ def gnp_random_connected_graph(num_of_nodes: int,
                     arrows=True)
             labels = nx.get_edge_attributes(G,'weight')
             nx.draw_networkx_edge_labels(G, pos,edge_labels=labels)
-            
+
         else:
             nx.draw(G, node_color='lightblue', 
                 with_labels=True, 
                 node_size=500)
-        
+
     return G
 
 
 def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
     '''
-    Perform Prim's algorithm to fid minimum panning tree
+    Perform Kruskal's algorithm to find minimum panning tree
     Graph is given as list of edges with 
     Returns list of tuples with information about minimum planning tree edges
     '''
@@ -79,7 +79,8 @@ def kruskal_algorithm(graph) -> list[tuple[int, int, dict]]:
                     break
     return res
 
+
 if __name__=="__main__":
     grph = gnp_random_connected_graph(5,1,False,False)
     print(kruskal_algorithm(grph))
-    print(list(tree.minimum_spanning_tree(grph, algorithm="kruskal").edges(data=True)))
+    print(sorted(list(tree.minimum_spanning_tree(grph, algorithm="kruskal").edges(data=True)), key=lambda x: x[2]['weight']))
